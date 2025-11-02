@@ -30,7 +30,7 @@ class ProblemSolutions {
      * @return      - returns boolean value B is a subset of A.
      */
 
-    public boolean isSubset(int [] list1, int [] list2) {
+    public boolean isSubset(int[] list1, int[] list2) {
         Set<Integer> set = new HashSet<>();
         for (int x : list1) set.add(x);
         for (int y : list2) {
@@ -54,10 +54,10 @@ class ProblemSolutions {
      */
 
     public int findKthLargest(int[] array, int k) {
-        if (k < 1 || k> array.length)
+        if (k < 1 || k > array.length)
             throw new IllegalArgumentException("k must be between 1 and array.length");
 
-        PriotityQue<Integer> minHeap = new PriorityQueue<>(k);
+        PriotityQueue<Integer> minHeap = new PriorityQueue<>(k);
         for (int val : array) {
             if (minHeap.size() < k) {
                 minHeap.offer(val);
@@ -68,10 +68,6 @@ class ProblemSolutions {
         }
         return minHeap.peek();
     }
-
-        return 0;
-    }
-
 
     /**
      * Method: sort2Arrays
@@ -91,9 +87,8 @@ class ProblemSolutions {
         for (int x : array1) merged.add(x);
         for (int y : array2) merged.add(y);
         Collections.sort(merged);
-        int [] out = new int[merged.size()];
+        int[] out = new int[merged.size()];
         for (int i = 0; i < merged.size(); i++) out[i] = merged.get(i);
         return out;
     }
-
 }
