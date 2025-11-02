@@ -57,7 +57,7 @@ class ProblemSolutions {
         if (k < 1 || k > array.length)
             throw new IllegalArgumentException("k must be between 1 and array.length");
 
-        PriotityQueue<Integer> minHeap = new PriorityQueue<>(k);
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(k);
         for (int val : array) {
             if (minHeap.size() < k) {
                 minHeap.offer(val);
