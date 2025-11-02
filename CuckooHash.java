@@ -52,6 +52,7 @@ public class CuckooHash<K, V> {
 	private int CAPACITY;  					// Hashmap capacity
 	private Bucket<K, V>[] table;			// Hashmap table
 	private int a = 37, b = 17;				// Constants used in h2(key)
+	private final java.util.Random rand = new java.util.Random();
 
 
 	/**
@@ -76,11 +77,8 @@ public class CuckooHash<K, V> {
 		/*
 		 * Getters and Setters
 		 */
-		private K getBucKey() {
-			return bucKey;
-		}
+		private K getBucKey() { return bucKey; }
 		private V getValue()  { return value;  }
-
 	}
 
 
@@ -118,9 +116,8 @@ public class CuckooHash<K, V> {
 
 	public int size() {
 		int count = 0;
-		for (int i=0; i<CAPACITY; ++i) {
-			if (table[i] != null)
-				count++; 	
+		for (int i = 0; i < CAPACITY; ++i) {
+			if (table[i] != null) count++; 	
 		}
 		return count;
 	}
@@ -151,7 +148,7 @@ public class CuckooHash<K, V> {
 
 	public List<V> values() {
 		List<V> allValues = new ArrayList<V>(); 
-		for (int i=0; i<CAPACITY; ++i) {
+		for (int i = 0; i < CAPACITY; ++i) {
 			if (table[i] != null) {
 				allValues.add(table[i].getValue());
 			}
@@ -170,7 +167,7 @@ public class CuckooHash<K, V> {
 
 	public Set<K> keys() {
 		Set<K> allKeys = new HashSet<K>();
-		for (int i=0; i<CAPACITY; ++i) {
+		for (int i = 0; i < CAPACITY; ++i) {
 			if (table[i] != null) {
 				allKeys.add(table[i].getBucKey());
 			}
@@ -256,7 +253,7 @@ public class CuckooHash<K, V> {
 		V curVal = value;
 		int pos = hash1(curKey);
 
-		for (int kicks = 0; kicks < CAPACITY; kicks++) {
+		for (int kicks = 0; kicks < 2 * CAPACITY; kicks++) {
 			if (table[pos] == null) {
 				table[pos] = new Bucket<K, V>(curKey, curVal);
 				return;
@@ -265,6 +262,7 @@ public class CuckooHash<K, V> {
 			if (curKey.equals(table[pos].getBucKey()) && curVal.equals(table[pos].getValue())) {
 				return;
 			}
+			
 			Bucket<K, V> evicted = table[pos];
 			table[pos] = new Bucket<K, V>(curKey, curVal);
 
