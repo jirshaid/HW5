@@ -245,12 +245,36 @@ public class CuckooHash<K, V> {
 	 */
 
  	public void put(K key, V value) {
+		int p1 = hash1(key);
+		int p2 = hash2(key);
+		if ((table[p1] != null && key.equals(table[p1].getBucKey()) && value.equals(table[p1].getValue())) ||
+			(table[p2] != null && key.equals(table[p2].getBucKey()) && value.equals(table[p2].getValue()))) {
+			return;
+		}
+		K curKey = key;
+		V curVal = value;
+		int pos = hash1(curKey);
 
-		// ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME AT TOP OF FILE.
-		// Also make sure you read this method's prologue above, it should help
-		// you. Especially the two HINTS in the prologue.
+		for (int kicks = 0; kicks < CAPACITY; kicks++) {
+			if (table[pos] == null) {
+				table[pos] = new Bucket<>curKey, curVal);
+				return;
+			}
+			if (curKey.equals(table[pos].getBucKey()) && curVal.equals(table[pos].getValue())) {
+				return;
+			}
+			Bucket<K, V> evicted = table[pos];
+			table[pos] = new Bucket<>(curKey, curVal);
 
-		return;
+			curKey = evicted.getBucKey();
+			curVal = evicted.getValue();
+
+			int h1 = hash1(curKey);
+			int h2 = hash2(curKey);
+			pos = (pos == h1) ? h2 : h1;
+		}
+		rehash();
+		put(curKey, curVal);
 	}
 
 
