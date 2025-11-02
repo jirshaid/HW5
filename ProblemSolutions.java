@@ -30,11 +30,13 @@ class ProblemSolutions {
      * @return      - returns boolean value B is a subset of A.
      */
 
-    public boolean isSubset(int list1[], int list2[]) {
-
-        // ADD YOU CODE HERE -- DON'T FORGET TO ADD YOR NAME AT TOP OF FILE
-
-        return false;
+    public boolean isSubset(int [] list1, int [] list2) {
+        Set<Integer> set = new HashSet<>();
+        for (int x : list1) set.add(x);
+        for (int y : list2) {
+            if (!set.contains(y)) return false;
+        }
+        return true;
     }
 
 
@@ -52,8 +54,20 @@ class ProblemSolutions {
      */
 
     public int findKthLargest(int[] array, int k) {
+        if (k < 1 || k> array.length)
+            throw new IllegalArgumentException("k must be between 1 and array.length");
 
-        // ADD YOUR CODE HERE
+        PriotityQue<Integer> minHeap = new PriorityQueue<>(k);
+        for (int val : array) {
+            if (minHeap.size() < k) {
+                minHeap.offer(val);
+            } else if (val > minHeap.peek()) {
+                minHeap.poll();
+                minHeap.offer(val);
+            }
+        }
+        return minHeap.peek();
+    }
 
         return 0;
     }
@@ -73,10 +87,13 @@ class ProblemSolutions {
      */
 
     public int[] sort2Arrays(int[] array1, int[] array2) {
-
-        // ADD YOU CODE HERE
-
-        return null;
+        List<Integer> merged = new ArrayList<>(array1.length + array2.length);
+        for (int x : array1) merged.add(x);
+        for (int y : array2) merged.add(y);
+        Collections.sort(merged);
+        int [] out = new int[merged.size()];
+        for (int i = 0; i < merged.size(); i++) out[i] = merged.get(i);
+        return out;
     }
 
 }
