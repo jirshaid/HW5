@@ -251,20 +251,22 @@ public class CuckooHash<K, V> {
 			(table[p2] != null && key.equals(table[p2].getBucKey()) && value.equals(table[p2].getValue()))) {
 			return;
 		}
+		
 		K curKey = key;
 		V curVal = value;
 		int pos = hash1(curKey);
 
 		for (int kicks = 0; kicks < CAPACITY; kicks++) {
 			if (table[pos] == null) {
-				table[pos] = new Bucket<>curKey, curVal);
+				table[pos] = new Bucket<K, V>(curKey, curVal);
 				return;
 			}
+			
 			if (curKey.equals(table[pos].getBucKey()) && curVal.equals(table[pos].getValue())) {
 				return;
 			}
 			Bucket<K, V> evicted = table[pos];
-			table[pos] = new Bucket<>(curKey, curVal);
+			table[pos] = new Bucket<K, V>(curKey, curVal);
 
 			curKey = evicted.getBucKey();
 			curVal = evicted.getValue();
@@ -273,6 +275,7 @@ public class CuckooHash<K, V> {
 			int h2 = hash2(curKey);
 			pos = (pos == h1) ? h2 : h1;
 		}
+		
 		rehash();
 		put(curKey, curVal);
 	}
